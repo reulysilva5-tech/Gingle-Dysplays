@@ -1,8 +1,9 @@
 {
   "name": "Gingle Display",
-  "short_name": "Navegador",
-  "start_url": "index.html",
+  "short_name": "Gingle",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#202124",
-  "theme_color": "#292a2d"
+  "background_color": "#0f1117",
+  "theme_color": "#151822"
 }
