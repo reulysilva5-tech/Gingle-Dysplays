@@ -4,170 +4,110 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Meu Navegador</title>
+  <title>Gingle Display</title>
 
+  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #202124;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .topbar {
-      height: 55px;
-      background: #292a2d;
-      display: flex;
-      align-items: center;
-      padding: 8px;
-      gap: 8px;
-    }
-
-    button {
-      background: #3c4043;
-      border: none;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    button:hover {
-      background: #5f6368;
-    }
-
-    input {
-      flex: 1;
-      height: 40px;
-      border: none;
-      border-radius: 20px;
-      padding: 0 18px;
-      background: #3c4043;
-      color: white;
-      outline: none;
-      font-size: 15px;
-    }
-
-    iframe {
-      width: 100%;
-      height: calc(100vh - 55px);
-      border: none;
-      background: white;
-    }
-  </style>
 </head>
 
 <body>
 
-  <div class="topbar">
+  <header class="top-area">
+
+    <div class="brand">
+      <div class="logo">G</div>
+      <span>Gingle Display</span>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <button class="new-tab" onclick="novaAba()">+</button>
+
+  </header>
+
+  <div class="toolbar">
 
     <button onclick="voltar()">←</button>
-
     <button onclick="avancar()">→</button>
-
     <button onclick="recarregar()">⟳</button>
+    <button onclick="home()">⌂</button>
 
     <input
       id="url"
-      placeholder="Digite um endereço..."
+      placeholder="Pesquisar ou digitar endereço"
       onkeydown="if(event.key === 'Enter') navegar()"
     >
 
-    <button onclick="navegar()">➜</button>
+    <button onclick="favoritar()">★</button>
 
   </div>
 
-  <iframe
-    id="browser"
-    src="https://www.wikipedia.org">
-  </iframe>
+  <div class="main">
 
-<script>
+    <aside class="sidebar">
 
-const iframe = document.getElementById("browser")
-const input = document.getElementById("url")
+      <button onclick="home()">🏠</button>
+      <button onclick="mostrarFavoritos()">⭐</button>
+      <button onclick="mostrarHistorico()">🕘</button>
 
-let historico = []
-let indice = -1
+    </aside>
 
-function navegar() {
+    <section class="browser-area">
 
-    let url = input.value.trim()
+      <div id="homePage" class="home-page">
 
-    if (!url) return
+        <h1>Gingle Display</h1>
 
-    if (!url.startsWith("http://") &&
-        !url.startsWith("https://")) {
+        <p>Pesquise ou acesse seus sites favoritos</p>
 
-        if (url.includes(".")) {
-            url = "https://" + url
-        } else {
-            url =
-            "https://www.google.com/search?q=" +
-            encodeURIComponent(url)
-        }
-    }
+        <input
+          id="homeSearch"
+          placeholder="Pesquisar..."
+          onkeydown="if(event.key === 'Enter') pesquisarHome()"
+        >
 
-    iframe.src = url
+        <div class="shortcuts">
 
-    historico = historico.slice(0, indice + 1)
+          <div onclick="abrirAtalho('https://www.google.com')">
+            Google
+          </div>
 
-    historico.push(url)
+          <div onclick="abrirAtalho('https://www.youtube.com')">
+            YouTube
+          </div>
 
-    indice++
+          <div onclick="abrirAtalho('https://github.com')">
+            GitHub
+          </div>
 
-}
+          <div onclick="abrirAtalho('https://discord.com')">
+            Discord
+          </div>
 
-function voltar() {
+        </div>
 
-    if (indice > 0) {
+        <div class="clock" id="clock"></div>
 
-        indice--
+      </div>
 
-        iframe.src = historico[indice]
+      <iframe
+        id="browser"
+        src="about:blank">
+      </iframe>
 
-        input.value = historico[indice]
+    </section>
 
-    }
+    <aside class="side-panel" id="sidePanel">
 
-}
+      <h3 id="panelTitle">Favoritos</h3>
 
-function avancar() {
+      <div id="panelContent"></div>
 
-    if (indice < historico.length - 1) {
+    </aside>
 
-        indice++
+  </div>
 
-        iframe.src = historico[indice]
-
-        input.value = historico[indice]
-
-    }
-
-}
-
-function recarregar() {
-
-    iframe.src = iframe.src
-
-}
-
-if ("serviceWorker" in navigator) {
-
-    navigator.serviceWorker.register("service-worker.js")
-
-}
-
-</script>
+  <script src="app.js"></script>
 
 </body>
 </html>
